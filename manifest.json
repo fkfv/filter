@@ -1,0 +1,29 @@
+{
+  "name": "ModFilter",
+  "description": "Advanced content filtering with modules to provide site-aware filtering options.",
+  "version": "0.1.0",
+  "manifest_version": 2,
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "background": {
+    "page": "background.html"
+  },
+  "options_page": "options.html",
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["contentscript.js"],
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": ["/modules/*"]
+}
