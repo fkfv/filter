@@ -35,10 +35,12 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
+    "build-ajv": "ajv compile -s module.json -o src/common/validate.js",
+    "watch-ajv": "npm-watch build-ajv",
     "build-webpack": "webpack --config webpack.prod.js",
     "watch-webpack": "webpack --watch --config webpack.dev.js",
-    "build": "npm-run-all -s build-webpack",
-    "watch": "npm-run-all watch-webpack",
+    "build": "npm-run-all -s build-ajv build-webpack",
+    "watch": "npm run-script build-ajv && npm-run-all -p watch-ajv watch-webpack",
     "start": "npm run-script watch"
   },
   "sideEffects": [

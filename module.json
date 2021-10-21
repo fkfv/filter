@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://raw.githubusercontent.com/fkfv/filter/master/module.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "match": {
+      "type": "string"
+    },
+    "scripts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "blocker": {
+          "type": "string"
+        },
+        "fetcher": {
+          "type": "string"
+        }
+      },
+      "required": ["blocker"]
+    },
+    "blockables": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": ["string", "object"],
+            "additionalProperties": false,
+            "properties": {
+              "singular": {
+                "type": "string"
+              },
+              "plural": {
+                "type": "string"
+              }
+            },
+            "required": ["singular", "plural"]
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": ["id"]
+      }
+    },
+    "options": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "oneOf": [
+            {
+              "properties": {
+                "type": {
+                  "const": "boolean"
+                },
+                "defaultValue": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "const": "string"
+                },
+                "defaultValue": {
+                  "type": "string"
+                },
+                "minimumLength": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "maximumLength": {
+                  "type": "number"
+                },
+                "match": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "const": "number"
+                },
+                "defaultValue": {
+                  "type": "number"
+                },
+                "minimumValue": {
+                  "type": "number"
+                },
+                "maximumValue": {
+                  "type": "number"
+                },
+                "precision": {
+                  "type": "number"
+                }
+              }
+            }
+          ],
+          "required": ["name", "type"]
+        }
+      }
+    }
+  },
+  "required": [
+    "name",
+    "match",
+    "scripts",
+    "blockables"
+  ] 
+}

@@ -1,0 +1,52 @@
+{
+  "name": "required module name",
+  "description": "optional module description",
+  "match": "required module regex",
+  "scripts": {
+    "blocker": "required blocker script",
+    "fetcher": "optional fetcher script"
+  },
+  "blockables": [
+    {
+      "id": "required blockable id",
+      "name": "optional single blockable name",
+      "description": "optional blockable description"
+    },
+    {
+      "id": "required blockable id2",
+      "name": {
+        "singular": "optional single blockable name2",
+        "plural": "optional plural blockable names"
+      },
+      "description": "optional blockable description2"
+    }
+  ],
+  "options": {
+    "optional option category": {
+      "optional option id": {
+        "name": "required option name",
+        "description": "optional option name",
+        "type": "boolean",
+        "defaultValue": "true"
+      },
+      "optional option id2": {
+        "name": "required option name2",
+        "description": "optional option description2",
+        "type": "string",
+        "defaultValue": "optional default value",
+        "minimumLength": 6,
+        "maximumLength": 54,
+        "match": "optional regex validator for value"
+      },
+      "optional option id3": {
+        "name": "required option name3",
+        "description": "optional option description3",
+        "type": "number",
+        "defaultValue": 50,
+        "minimumValue": 0,
+        "maximumValue": 55,
+        "precision": 5
+      }
+    }
+  }
+}
