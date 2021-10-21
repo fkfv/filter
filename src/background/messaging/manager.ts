@@ -1,12 +1,13 @@
-import Connection from '../../common/messaging/connection';
+import ManagedConnection from './connection';
 
-import {Message, Listener} from '../../common/messaging/event';
+import {Message} from '../../common/messaging/event';
+import {Listener} from '../../common/module/interface';
 
 
 class Accepted extends Event {
-  sender: Connection;
+  sender: ManagedConnection;
 
-  constructor(sender: Connection) {
+  constructor(sender: ManagedConnection) {
     super('connect');
 
     this.sender = sender;
@@ -17,20 +18,20 @@ class ConnectionManager {
   /*
   ** Array of all active connections.
   */
-  connections: Connection[] = [];
-  message: Listener<Message> = new Listener();
+  connections: ManagedConnection[] = [];
+  message: Listener<Message<ManagedConnection>> = new Listener();
   connect: Listener<Accepted> = new Listener();
 
   /*
   ** Broadcast a messagge to all connections, or optionally leave out the one
   ** connection acting as the sender of the broadcast.
   */
-  broadcast(message: any, sender?: Connection) {
+  broadcast(message: any, sender?: ManagedConnection) {
     this.connections.filter(c => c === sender).forEach(c => c.send(message));
   }
 
-  acceptConnection(port: chrome.runtime.Port): Connection {
-    const connection = new Connection(port);
+  acceptConnection(port: chrome.runtime.Port): ManagedConnection {
+    const connection = new ManagedConnection(port, this);
 
     this.connections.push(connection);
     port.onDisconnect.addListener(this.onDisconnect.bind(this));
@@ -40,7 +41,7 @@ class ConnectionManager {
     return connection;
   }
 
-  private onMessage(sender: Connection, message: Message) {
+  private onMessage(sender: ManagedConnection, message: Message) {
     this.message.dispatchEvent(
       new Message(message.message, message.id, sender)
     );

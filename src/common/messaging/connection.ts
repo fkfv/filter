@@ -1,6 +1,7 @@
 import {v4 as uuid} from 'uuid';
 
-import {Message, Listener} from './event';
+import {Message} from './event';
+import {Listener} from '../module/interface';
 import {Log} from '../logging';
 
 
@@ -50,7 +51,8 @@ class Connection {
         useListener ? '%cYes' : '%cNo',
         useListener ? 'color: green' : 'color: red'
       ],
-      'Direction': ['%cIncoming', 'color: orange']
+      'Direction': ['%cIncoming', 'color: orange'],
+      'Message': JSON.stringify(message)
     });
 
     if (useListener) {
@@ -85,7 +87,8 @@ class Connection {
           waitForResponse ? '%cNo' : '%cYes',
           waitForResponse ? 'color: red' : 'color: green'
         ],
-        'Direction': ['%cOutgoing', 'color: blue']
+        'Direction': ['%cOutgoing', 'color: blue'],
+      'Message': JSON.stringify(message)
       });
 
       if (waitForResponse) {
