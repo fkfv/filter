@@ -40,11 +40,13 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       title: 'ModFilter Options',
+      template: 'src/template.html',
       filename: 'options.html',
       chunks: ['options']
     }),
     new HtmlWebpackPlugin({
       title: 'ModFilter Blocking',
+      template: 'src/template.html',
       filename: 'popup.html',
       chunks: ['popup']
     }),
