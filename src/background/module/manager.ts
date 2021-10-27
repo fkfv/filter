@@ -1,4 +1,5 @@
 import Module from './module';
+import FetchManager from '../fetch/manager';
 import ConnectionManager from '../messaging/manager';
 
 
@@ -7,6 +8,7 @@ class ModuleManager {
     [moduleName: string]: Module
   } = {};
 
+  fetchManager: FetchManager = new FetchManager();
   connectionManager: ConnectionManager;
 
   constructor(connectionManager: ConnectionManager) {
@@ -19,11 +21,20 @@ class ModuleManager {
 
     this.loadedModules[module.name as string] = module;
 
+    if (typeof module.fetchScript !== 'undefined') {
+      module.fetchScript.register(this.fetchManager.create(module));
+    }
+
     return module;
   }
 
   async unloadModule(name: string) {
     const module = this.loadedModules[name] as Module;
+
+    if (typeof module.fetchScript !== 'undefined') {
+      this.fetchManager.destroy(module.name as string);
+      module.fetchScript.unregister();
+    }
 
     delete this.loadedModules[name];
   }

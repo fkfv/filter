@@ -1,4 +1,6 @@
 import OptionHandler from './option';
+import FetchHandler from './fetch';
+import ModuleHandler from './module';
 import ModuleManager from '../module/manager';
 
 import {MultiMessageHandler} from '../../common/message/handler';
@@ -10,7 +12,16 @@ const IndexHandler = (manager: ModuleManager) => (msg: any) => {
     MessageType.OptionGetRequest,
     MessageType.OptionSetRequest,
     MessageType.OptionListRequest
-  ], OptionHandler(manager));
+  ], OptionHandler(manager)) ||
+  MultiMessageHandler(msg, [
+    MessageType.FetchRequest
+  ], FetchHandler(manager)) ||
+  MultiMessageHandler(msg, [
+    MessageType.ModuleRequest,
+    MessageType.ModuleListRequest,
+    MessageType.ModuleLoadRequest,
+    MessageType.ModuleUnloadRequest
+  ], ModuleHandler(manager));
 };
 
 export default IndexHandler;
