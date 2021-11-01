@@ -1,5 +1,6 @@
 import Module from './module';
 import FetchManager from '../fetch/manager';
+import BlockManager from '../block/manager';
 import ConnectionManager from '../messaging/manager';
 
 
@@ -9,6 +10,7 @@ class ModuleManager {
   } = {};
 
   fetchManager: FetchManager = new FetchManager();
+  blockManager: BlockManager = new BlockManager();
   connectionManager: ConnectionManager;
 
   constructor(connectionManager: ConnectionManager) {
