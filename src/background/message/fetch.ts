@@ -1,4 +1,4 @@
-import ModuleManager from '../module/manager';
+import ModuleList from '../module/list';
 
 import {MessageType} from '../../common/message/message';
 import {MessageHandler} from '../../common/message/handler';
@@ -25,16 +25,16 @@ const FetchError = (msg: Message): ((message: string) => void) => {
   };
 };
 
-const FetchHandler = (manager: ModuleManager) => (msg: Message): boolean => {
+const FetchHandler = (list: ModuleList) => (msg: Message): boolean => {
   return MessageHandler(msg, {
     [MessageType.FetchRequest]: (request: FetchRequest) => {
-      const module = manager.getModule(request.payload.module);
+      const module = list.manager.getModule(request.payload.module);
       if (!module) {
         msg.reply(ErrorResponse('Module does not exist'));
       } else if (typeof module.fetchScript === 'undefined') {
         msg.reply(ErrorResponse('Module does not have a fetcher'));
       } else {
-        const fetcher = manager.fetchManager.create(module);
+        const fetcher = list.manager.fetchManager.create(module);
         /* todo: fetch cached. */
         fetcher.fetch.dispatchEvent(new FetchEvent(request.payload.detail,
                                                    FetchRespond(msg),

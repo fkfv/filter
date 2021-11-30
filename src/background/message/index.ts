@@ -2,31 +2,31 @@ import OptionHandler from './option';
 import FetchHandler from './fetch';
 import ModuleHandler from './module';
 import IdentifyHandler from './identify';
-import ModuleManager from '../module/manager';
+import ModuleList from '../module/list';
 
 import {MultiMessageHandler} from '../../common/message/handler';
 import {MessageType} from '../../common/message/message';
 
 
-const IndexHandler = (manager: ModuleManager) => (msg: any) => {
+const IndexHandler = (list: ModuleList) => (msg: any) => {
   MultiMessageHandler(msg, [
     MessageType.OptionGetRequest,
     MessageType.OptionSetRequest,
     MessageType.OptionListRequest
-  ], OptionHandler(manager)) ||
+  ], OptionHandler(list)) ||
   MultiMessageHandler(msg, [
     MessageType.FetchRequest
-  ], FetchHandler(manager)) ||
+  ], FetchHandler(list)) ||
   MultiMessageHandler(msg, [
     MessageType.ModuleRequest,
     MessageType.ModuleListRequest,
     MessageType.ModuleLoadRequest,
     MessageType.ModuleUnloadRequest
-  ], ModuleHandler(manager)) ||
+  ], ModuleHandler(list)) ||
   MultiMessageHandler(msg, [
     MessageType.IdentifyRequest,
     MessageType.BlockRequest
-  ], IdentifyHandler(manager));
+  ], IdentifyHandler(list));
 };
 
 export default IndexHandler;

@@ -160,6 +160,7 @@ type ModuleListResponsePayload = {
     url: string;
     name: string;
     description?: string;
+    active: boolean;
   }[];
 };
 

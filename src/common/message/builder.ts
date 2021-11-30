@@ -115,6 +115,7 @@ const ModuleListResponse = (modules: {
   url: string;
   name: string;
   description?: string;
+  active: boolean;
 }[]) => {
   return {
     type: MessageType.ModuleListResponse,

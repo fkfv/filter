@@ -12,6 +12,7 @@ interface ModulesState {
   modules: {
     name: string;
     description: string;
+    active: boolean;
   }[];
 
   confirmRemove: string|undefined;
@@ -64,7 +65,8 @@ const modulesSlice = createSlice({
       state.modules = Object.values(action.payload).map((module) => {
         return {
           name: module.name,
-          description: module.description ?? module.name
+          description: module.description ?? module.name,
+          active: module.active
         };
       });
     });

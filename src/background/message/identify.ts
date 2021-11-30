@@ -1,4 +1,4 @@
-import ModuleManager from '../module/manager';
+import ModuleList from '../module/list';
 
 import {MessageType} from '../../common/message/message';
 import {MessageHandler, Try} from '../../common/message/handler';
@@ -9,14 +9,14 @@ import type {IdentifyRequest,
   BlockRequest} from '../../common/message/message';
 
 
-const IdentifyHandler = (manager: ModuleManager) => (msg: any): boolean => {
+const IdentifyHandler = (list: ModuleList) => (msg: any): boolean => {
   return MessageHandler(msg, {
     [MessageType.IdentifyRequest]: (request: IdentifyRequest) => {
-      const module = manager.getModule(request.payload.module);
+      const module = list.manager.getModule(request.payload.module);
       if (!module) {
         msg.reply(ErrorResponse('Module not found'));
       } else {
-        const blocker = manager.blockManager.create(module);
+        const blocker = list.manager.blockManager.create(module);
         const matcher = Object.entries(request.payload.fields)
           .map(([field, value]: [string, string|string[]]) => {
             return [field, blocker.contains(field, value)];
@@ -35,11 +35,11 @@ const IdentifyHandler = (manager: ModuleManager) => (msg: any): boolean => {
       }
     },
     [MessageType.BlockRequest]: (request: BlockRequest) => {
-      const module = manager.getModule(request.payload.module);
+      const module = list.manager.getModule(request.payload.module);
       if (!module) {
         msg.reply(ErrorResponse('Module not found'));
       } else {
-        const blocker = manager.blockManager.create(module);
+        const blocker = list.manager.blockManager.create(module);
         const waiting = Object.entries(request.payload.fields)
           .map(([name, value]: [string, string|string[]]) => {
             if (request.payload.action === 'add') {
@@ -51,7 +51,7 @@ const IdentifyHandler = (manager: ModuleManager) => (msg: any): boolean => {
 
         Try(Promise.all(waiting), msg, (_: any) => {
           msg.reply(BlockResponse());
-          manager.connectionManager.broadcast(RefreshRequest());
+          list.manager.connectionManager.broadcast(RefreshRequest());
         });
       }
     }

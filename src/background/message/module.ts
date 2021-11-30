@@ -1,4 +1,5 @@
 import ModuleManager from '../module/manager';
+import ModuleList from '../module/list';
 import Module from '../module/module';
 
 import {MessageType} from '../../common/message/message';
@@ -21,31 +22,16 @@ const FilterModule = (manager: ModuleManager, request: ModuleRequest) => {
     }));
 };
 
-const ListModule = (manager: ModuleManager) => {
-  return Object.values(manager.loadedModules).map(module => {
-    if (typeof module.description === 'undefined') {
-      return {
-        url: module.sources.manifest,
-        name: module.name as string
-      };
-    } else {
-      return {
-        url: module.sources.manifest,
-        name: module.name as string,
-        description: module.description
-      };
-    }
-  });
-};
-
-const ModuleHandler = (manager: ModuleManager) => (msg: Message): boolean => {
+const ModuleHandler = (list: ModuleList) => (msg: Message): boolean => {
   return MessageHandler(msg, {
     [MessageType.ModuleRequest]: (request: ModuleRequest) => {
       msg.reply(ModuleResponse(request.payload.url,
-                               FilterModule(manager, request)));
+                               FilterModule(list.manager, request)));
     },
     [MessageType.ModuleListRequest]: (_: ModuleListRequest) => {
-      msg.reply(ModuleListResponse(ListModule(manager)));
+      Try(list.list(), msg, (modules) => {
+        msg.reply(ModuleListResponse(modules));
+      });
     },
     [MessageType.ModuleLoadRequest]: (request: ModuleLoadRequest) => {
       Try(manager.loadModule(request.payload.url), msg, (module: Module) => {

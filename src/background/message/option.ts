@@ -1,4 +1,4 @@
-import ModuleManager from '../module/manager';
+import ModuleList from '../module/list';
 
 import {Message} from '../../common/messaging/event';
 import {MessageType} from '../../common/message/message';
@@ -31,10 +31,10 @@ const StringRegExpTransformer = (_: any, value: any) => {
   return value;
 };
 
-const OptionHandler = (manager: ModuleManager) => (msg: Message): boolean => {
+const OptionHandler = (list: ModuleList) => (msg: Message): boolean => {
   return MessageHandler(msg, {
     [MessageType.OptionGetRequest]: (request: OptionGetRequest) => {
-      const module = manager.getModule(request.payload.module);
+      const module = list.manager.getModule(request.payload.module);
       if (!module) {
         msg.reply(ErrorResponse('Module not found'));
       } else if (typeof module.option === 'undefined') {
@@ -48,7 +48,7 @@ const OptionHandler = (manager: ModuleManager) => (msg: Message): boolean => {
       }
     },
     [MessageType.OptionSetRequest]: (request: OptionSetRequest) => {
-      const module = manager.getModule(request.payload.module);
+      const module = list.manager.getModule(request.payload.module);
       if (!module) {
         msg.reply(ErrorResponse('Module not found'));
       } else if (typeof module.option === 'undefined') {
@@ -62,7 +62,7 @@ const OptionHandler = (manager: ModuleManager) => (msg: Message): boolean => {
       }
     },
     [MessageType.OptionListRequest]: (request: OptionListRequest) => {
-      const module = manager.getModule(request.payload.module);
+      const module = list.manager.getModule(request.payload.module);
       if (!module) {
         msg.reply(ErrorResponse('Module not found'));
       } else if (typeof module.options === 'undefined') {
