@@ -27,11 +27,19 @@ enum MessageType {
   ** Allow the content script to list, load, and unload modules.
   */
   ModuleListRequest = "content-script/module/list",
-  ModuleLoadRequest = "content-script/module/load",
-  ModuleUnloadRequest = "content-script/module/unload",
   ModuleListResponse = "background/module/list",
-  ModuleLoadResponse = "background/module/load",
-  ModuleUnloadResponse = "background/module/unload",
+
+  /*
+  ** Allow the options script to store unactivated or activated modules.
+  */
+  ModuleActivateRequest = "content-script/module/activate",
+  ModuleDeactivateRequest = "content-script/module/deactivate",
+  ModuleAddRequest = "content-script/module/add",
+  ModuleRemoveRequest = "content-script/module/remove",
+  ModuleActivateResponse = "background/module/activate",
+  ModuleDeactivateResponse = "background/module/deactivate",
+  ModuleAddResponse = "background/module/add",
+  ModuleRemoveResponse = "background/module/remove",
 
   /*
   ** Allow the content script to submit data against the block database, or
@@ -176,14 +184,22 @@ type ModuleUrlPayload = {
   url: string;
 };
 
-type ModuleLoadRequest = MessageTypeGen<MessageType.ModuleLoadRequest,
-                                        ModuleUrlPayload>;
-type ModuleUnloadRequest = MessageTypeGen<MessageType.ModuleUnloadRequest,
+type ModuleActivateRequest = MessageTypeGen<MessageType.ModuleActivateRequest,
+                                            ModuleNamePayload>;
+type ModuleDeactivateRequest = MessageTypeGen<MessageType.ModuleDeactivateRequest,
+                                              ModuleNamePayload>;
+type ModuleAddRequest = MessageTypeGen<MessageType.ModuleAddRequest,
+                                       ModuleUrlPayload>;
+type ModuleRemoveRequest = MessageTypeGen<MessageType.ModuleRemoveRequest,
                                           ModuleNamePayload>;
-type ModuleLoadResponse = MessageTypeGen<MessageType.ModuleLoadResponse,
-                                         ModuleNamePayload>;
-type ModuleUnloadResponse = MessageTypeGen<MessageType.ModuleUnloadResponse,
-                                           {}>;
+type ModuleActivateResponse = MessageTypeGen<MessageType.ModuleActivateResponse,
+                                             ModuleNamePayload>;
+type ModuleDeactivateResponse = MessageTypeGen<MessageType.ModuleDeactivateResponse,
+                                               ModuleNamePayload>;
+type ModuleAddResponse = MessageTypeGen<MessageType.ModuleAddResponse,
+                                        ModuleNamePayload>;
+type ModuleRemoveResponse = MessageTypeGen<MessageType.ModuleRemoveResponse,
+                                           ModuleNamePayload>;
 
 type FieldPayload = {
   module: string;
@@ -235,10 +251,14 @@ type Message =
   |ModuleResponse
   |ModuleListRequest
   |ModuleListResponse
-  |ModuleLoadRequest
-  |ModuleUnloadRequest
-  |ModuleLoadResponse
-  |ModuleUnloadResponse
+  |ModuleActivateRequest
+  |ModuleDeactivateRequest
+  |ModuleAddRequest
+  |ModuleRemoveRequest
+  |ModuleActivateResponse
+  |ModuleDeactivateResponse
+  |ModuleAddResponse
+  |ModuleRemoveResponse
   |IdentifyRequest
   |BlockRequest
   |IdentifyResponse
@@ -268,10 +288,14 @@ export type {
   ModuleResponse,
   ModuleListRequest,
   ModuleListResponse,
-  ModuleLoadRequest,
-  ModuleUnloadRequest,
-  ModuleLoadResponse,
-  ModuleUnloadResponse,
+  ModuleActivateRequest,
+  ModuleDeactivateRequest,
+  ModuleAddRequest,
+  ModuleRemoveRequest,
+  ModuleActivateResponse,
+  ModuleDeactivateResponse,
+  ModuleAddResponse,
+  ModuleRemoveResponse,
   IdentifyRequest,
   BlockRequest,
   IdentifyResponse,

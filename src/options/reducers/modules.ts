@@ -2,7 +2,9 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 import {connection} from '../connection';
 import {RootState} from '../redux/store';
-import {ModuleList, ModuleLoad, ModuleUnload} from '../api/module';
+import {setModule} from './option';
+import {ModuleList, ModuleActivate, ModuleDeactivate, ModuleAdd,
+  ModuleRemove} from '../api/module';
 
 import type {AsyncConfig} from '../redux/store'
 import type {ModuleListResponsePayload} from '../../common/message/message';
@@ -15,6 +17,7 @@ interface ModulesState {
     active: boolean;
   }[];
 
+  addErrorMessage: string|undefined;
   confirmRemove: string|undefined;
 }
 
@@ -22,6 +25,7 @@ type ModuleListType = ModuleListResponsePayload['modules'];
 
 const initialState: ModulesState = {
   modules: [],
+  addErrorMessage: undefined,
   confirmRemove: undefined
 };
 
@@ -34,21 +38,40 @@ const listModules = createAsyncThunk<ModuleListType, void, AsyncConfig>(
   }
 );
 
-const loadModule = createAsyncThunk<string, string, AsyncConfig>(
-  'modules/load',
-  async (url: string, {getState}) => {
-    const connection = selectConnection(getState());
-    const name = await ModuleLoad(connection as Connection, url);
+const activateModule = createAsyncThunk<void, string, AsyncConfig>(
+  'modules/activate',
+  async (name, {dispatch}) => {
+    await ModuleActivate(connection, name);
 
-    return name;
+    dispatch(listModules());
   }
 );
 
-const unloadModule = createAsyncThunk<void, string, AsyncConfig>(
-  'modules/unload',
-  async (name: string, {getState}) => {
-    const connection = selectConnection(getState());
-    await ModuleUnload(connection as Connection, name);
+const deactivateModule = createAsyncThunk<void, string, AsyncConfig>(
+  'modules/deactivate',
+  async (name, {dispatch}) => {
+    await ModuleDeactivate(connection, name);
+
+    dispatch(listModules());
+  }
+);
+
+const addModule = createAsyncThunk<void, string, AsyncConfig>(
+  'modules/add',
+  async (url, {dispatch}) => {
+    const module = await ModuleAdd(connection, url);
+
+    dispatch(setModule(module));
+    dispatch(listModules());
+  }
+);
+
+const removeModule = createAsyncThunk<void, string, AsyncConfig>(
+  'modules/remove',
+  async (name, {dispatch}) => {
+    await ModuleRemove(connection, name);
+
+    dispatch(listModules());
   }
 );
 
@@ -70,15 +93,23 @@ const modulesSlice = createSlice({
         };
       });
     });
+    builder.addCase(addModule.pending, (state, _) => {
+      state.addErrorMessage = undefined;
+    });
+    builder.addCase(addModule.rejected, (state, action) => {
+      state.addErrorMessage = action.error.message;
+    });
   }
 });
 
 const selectModules = (state: RootState) => state.modules.modules;
 const selectConfirmRemove = (state: RootState) => state.modules.confirmRemove;
+const selectErrorMessage = (state: RootState) => state.modules.addErrorMessage;
 
 const {setConfirmRemove} = modulesSlice.actions;
 
-export {selectModules, listModules, loadModule, unloadModule, setConfirmRemove,
-  selectConfirmRemove};
+export {selectModules, listModules, activateModule, deactivateModule,
+  addModule, removeModule, setConfirmRemove, selectConfirmRemove,
+  selectErrorMessage};
 
 export default modulesSlice.reducer;

@@ -11,3 +11,8 @@ const moduleList = new ModuleList(moduleManager);
 chrome.runtime.onConnect.addListener(connectionManager.acceptConnection.bind(connectionManager));
 connectionManager.message.addListener(IndexHandler(moduleList));
 
+moduleList.list().then(modules => {
+  modules.forEach(module => {
+    moduleManager.loadModule(module.url);
+  })
+});

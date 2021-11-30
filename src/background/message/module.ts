@@ -5,11 +5,13 @@ import Module from '../module/module';
 import {MessageType} from '../../common/message/message';
 import {MessageHandler, Try} from '../../common/message/handler';
 import {Message} from '../../common/messaging/event';
-import {ModuleResponse, ModuleListResponse, ModuleLoadResponse,
-  ModuleUnloadResponse} from '../../common/message/builder';
+import {ModuleResponse, ModuleListResponse, ModuleActivateResponse,
+  ModuleDeactivateResponse, ModuleAddResponse,
+  ModuleRemoveResponse} from '../../common/message/builder';
 
-import type {ModuleRequest, ModuleListRequest, ModuleLoadRequest,
-  ModuleUnloadRequest} from '../../common/message/message';
+import type {ModuleRequest, ModuleListRequest, ModuleActivateRequest,
+  ModuleDeactivateRequest, ModuleAddRequest,
+  ModuleRemoveRequest} from '../../common/message/message';
 
 
 const FilterModule = (manager: ModuleManager, request: ModuleRequest) => {
@@ -33,15 +35,25 @@ const ModuleHandler = (list: ModuleList) => (msg: Message): boolean => {
         msg.reply(ModuleListResponse(modules));
       });
     },
-    [MessageType.ModuleLoadRequest]: (request: ModuleLoadRequest) => {
-      Try(manager.loadModule(request.payload.url), msg, (module: Module) => {
-        msg.reply(ModuleLoadResponse(module.name as string));
+    [MessageType.ModuleActivateRequest]: (request: ModuleActivateRequest) => {
+      Try(list.activate(request.payload.module), msg, (module) => {
+        msg.reply(ModuleActivateResponse(module.name));
       });
     },
-    [MessageType.ModuleUnloadRequest]: (request: ModuleUnloadRequest) => {
-      Try(manager.unloadModule(request.payload.module), msg, () => {
-        msg.reply(ModuleUnloadResponse());
+    [MessageType.ModuleDeactivateRequest]: (request: ModuleDeactivateRequest) => {
+      Try(list.deactivate(request.payload.module), msg, (module) => {
+        msg.reply(ModuleDeactivateResponse(module.name));
+      })
+    },
+    [MessageType.ModuleAddRequest]: (request: ModuleAddRequest) => {
+      Try(list.add(request.payload.url), msg, (module) => {
+        msg.reply(ModuleAddResponse(module.name));
       });
+    },
+    [MessageType.ModuleRemoveRequest]: (request: ModuleRemoveRequest) => {
+      Try(list.remove(request.payload.module), msg, () => {
+        msg.reply(ModuleRemoveResponse(request.payload.module));
+      })
     }
   });
 };

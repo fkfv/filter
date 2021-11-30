@@ -1,10 +1,12 @@
 import Connection from '../../common/messaging/connection';
 
-import {ModuleListRequest, ModuleLoadRequest,
-  ModuleUnloadRequest} from '../../common/message/builder';
-import {ModuleListResponse, ModuleLoadResponse,
-  ModuleUnloadResponse} from '../../common/message/message';
+import {ModuleListRequest, ModuleActivateRequest, ModuleDeactivateRequest,
+  ModuleAddRequest, ModuleRemoveRequest} from '../../common/message/builder';
 import {ApiSend} from './';
+
+import type {ModuleListResponse, ModuleActivateResponse,
+  ModuleDeactivateResponse, ModuleAddResponse,
+  ModuleRemoveResponse} from '../../common/message/message';
 
 
 const ModuleList = async (connection: Connection) => {
@@ -14,17 +16,26 @@ const ModuleList = async (connection: Connection) => {
   return modules.payload.modules;
 };
 
-const ModuleLoad = async (connection: Connection,
-                          url: string): Promise<string> => {
-  const name = await ApiSend<ModuleLoadResponse>(connection,
-                                                 ModuleLoadRequest(url));
-
-  return name.payload.module;
+const ModuleActivate = async (connection: Connection, module: string) => {
+  await ApiSend<ModuleActivateResponse>(connection,
+                                        ModuleActivateRequest(module));
 };
 
-const ModuleUnload = async (connection: Connection,
-                            name: string): Promise<void> => {
-  await ApiSend<ModuleUnloadResponse>(connection, ModuleUnloadRequest(name));
+const ModuleDeactivate = async (connection: Connection, module: string) => {
+  await ApiSend<ModuleDeactivateResponse>(connection,
+                                          ModuleDeactivateRequest(module));
 };
 
-export {ModuleList, ModuleLoad, ModuleUnload};
+const ModuleAdd = async (connection: Connection, url: string) => {
+  const module = await ApiSend<ModuleAddResponse>(connection,
+                                                  ModuleAddRequest(url));
+
+  return module.payload.module;
+};
+
+const ModuleRemove = async (connection: Connection, module: string) => {
+  await ApiSend<ModuleRemoveResponse>(connection,
+                                      ModuleRemoveRequest(module));
+};
+
+export {ModuleList, ModuleActivate, ModuleDeactivate, ModuleAdd, ModuleRemove};

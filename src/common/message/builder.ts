@@ -125,35 +125,39 @@ const ModuleListResponse = (modules: {
   };
 };
 
-const ModuleName = (type: string, name: string) => {
+const ModuleName = (type: string, module: string) => {
   return {
     type,
     payload: {
-      name
+      module
     }
   };
 };
 
-const ModuleLoadRequest = (url: string) => {
+const ModuleActivateRequest = (name: string) =>
+  ModuleName(MessageType.ModuleActivateRequest, name);
+const ModuleDeactivateRequest = (name: string) =>
+  ModuleName(MessageType.ModuleDeactivateRequest, name);
+
+const ModuleAddRequest = (url: string) => {
   return {
-    type: MessageType.ModuleLoadRequest,
+    type: MessageType.ModuleAddRequest,
     payload: {
       url
     }
   };
 };
 
-const ModuleUnloadRequest = (name: string) =>
-  ModuleName(MessageType.ModuleUnloadRequest, name);
-const ModuleLoadResponse = (name: string) =>
-  ModuleName(MessageType.ModuleLoadResponse, name);
-
-const ModuleUnloadResponse = () => {
-  return {
-    type: MessageType.ModuleUnloadResponse,
-    payload: {}
-  };
-};
+const ModuleRemoveRequest = (name: string) =>
+  ModuleName(MessageType.ModuleRemoveRequest, name);
+const ModuleActivateResponse = (name: string) =>
+  ModuleName(MessageType.ModuleActivateResponse, name);
+const ModuleDeactivateResponse = (name: string) =>
+  ModuleName(MessageType.ModuleDeactivateResponse, name);
+const ModuleAddResponse = (name: string) =>
+  ModuleName(MessageType.ModuleAddResponse, name);
+const ModuleRemoveResponse = (name: string) =>
+  ModuleName(MessageType.ModuleRemoveResponse, name);
 
 const Field = (type: string, module: string, fields: {
   [fieldName: string]: string|string[];
@@ -226,8 +230,10 @@ export {
   FetchRequest, FetchResponse,
   ModuleRequest, ModuleResponse,
   ModuleListRequest, ModuleListResponse,
-  ModuleLoadRequest, ModuleLoadResponse,
-  ModuleUnloadRequest, ModuleUnloadResponse,
+  ModuleActivateRequest, ModuleActivateResponse,
+  ModuleDeactivateRequest, ModuleDeactivateResponse,
+  ModuleAddRequest, ModuleAddResponse,
+  ModuleRemoveRequest, ModuleRemoveResponse,
   IdentifyRequest, IdentifyResponse,
   BlockRequest, BlockResponse,
   RefreshRequest, ModuleRefreshRequest,

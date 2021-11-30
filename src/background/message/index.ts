@@ -20,8 +20,10 @@ const IndexHandler = (list: ModuleList) => (msg: any) => {
   MultiMessageHandler(msg, [
     MessageType.ModuleRequest,
     MessageType.ModuleListRequest,
-    MessageType.ModuleLoadRequest,
-    MessageType.ModuleUnloadRequest
+    MessageType.ModuleActivateRequest,
+    MessageType.ModuleDeactivateRequest,
+    MessageType.ModuleAddRequest,
+    MessageType.ModuleRemoveRequest
   ], ModuleHandler(list)) ||
   MultiMessageHandler(msg, [
     MessageType.IdentifyRequest,
