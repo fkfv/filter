@@ -11,14 +11,16 @@ class Option {
   }
 
   get(name: string): Promise<boolean|string|number|undefined> {
+    const qualifiedName = `${this.module.name}.${name}`;
+
     return new Promise((resolve, reject) => {
       chrome.storage.local.get({
-        [name]: this.module.findOptionDefault(name)
+        [qualifiedName]: this.module.findOptionDefault(name)
       }, (items: {[key: string]: any}) => {
         if (chrome.runtime.lastError) {
           reject(chrome.runtime.lastError);
-        } else if (items.hasOwnProperty(name) && items[name] !== undefined) {
-          resolve(items[name]);
+        } else if (items.hasOwnProperty(qualifiedName) && items[qualifiedName] !== undefined) {
+          resolve(items[qualifiedName]);
         } else {
           reject(new Error('Failed to retrieve value.'));
         }
@@ -77,8 +79,10 @@ class Option {
 
   _set(name: string, value: boolean|string|number,
        resolve: (() => void), reject: ((err: any) => void)) {
+    const qualifiedName = `${this.module.name}.${name}`;
+
     chrome.storage.local.set({
-      [name]: value
+      [qualifiedName]: value
     }, () => {
       if (chrome.runtime.lastError) {
         reject(chrome.runtime.lastError);
