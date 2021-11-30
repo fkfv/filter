@@ -9,10 +9,13 @@ import Options from './module/options';
 
 import {Main, Container, Body} from './layout/main';
 import {SidebarHeader, MainHeader, Header} from './layout/header';
+import {useAppSelector} from '../redux/hooks';
+import {selectModule} from '../reducers/option';
 
 
 const App = () => {
   const [visible, setVisible] = useState(false);
+  const name = useAppSelector(selectModule) ?? '';
 
   return (
     <React.Fragment>
@@ -27,7 +30,7 @@ const App = () => {
             <span>Filter</span>
           </SidebarHeader>
           <MainHeader>
-            <span>Module Name</span>
+            <span>{name}</span>
           </MainHeader>
         </Header>
         <Body>

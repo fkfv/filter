@@ -23,8 +23,8 @@ const BooleanControl = ({
   return (
     <Toggle
       id={name}
-      value={value}
-      onChange={(e) => dispatch(setOption({name, value: e.target.value}))}
+      checked={value}
+      onChange={(e) => dispatch(setOption({name, value: e.target.checked}))}
     >
       {displayName}
     </Toggle>
