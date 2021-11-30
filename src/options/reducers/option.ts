@@ -1,9 +1,7 @@
-import Connection from '../../common/messaging/connection';
-
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
+import {connection} from '../connection';
 import {RootState} from '../redux/store';
-import {selectConnection} from './connection';
 import {OptionList, OptionGet, OptionSet} from '../api/option';
 
 import type {OptionListOption} from '../../common/message/message';
@@ -47,7 +45,6 @@ const listOptions = createAsyncThunk<
   'option/list',
   async (_, {getState, dispatch}) => {
     const module = selectModule(getState()) as string;
-    const connection = selectConnection(getState()) as Connection;
     const options = await OptionList(connection, module);
 
     Object.values(options).forEach(category => {
@@ -64,7 +61,6 @@ const getOption = createAsyncThunk<NameValueType, string, AsyncConfig>(
   'option/get',
   async (name, {getState}) => {
     const module = selectModule(getState()) as string;
-    const connection = selectConnection(getState()) as Connection;
     const value = await OptionGet(connection, module, name);
 
     return {name, value};
@@ -75,7 +71,6 @@ const setOption = createAsyncThunk<NameValueType, NameValueType, AsyncConfig>(
   'option/set',
   async ({name, value}, {getState}) => {
     const module = selectModule(getState()) as string;
-    const connection = selectConnection(getState()) as Connection;
 
     await OptionSet(connection, module, name, value);
     return {name, value};

@@ -2,14 +2,12 @@ import logger from 'redux-logger';
 
 import {configureStore, ThunkAction, Action} from '@reduxjs/toolkit';
 
-import connectionReducer from '../reducers/connection';
 import modulesReducer from '../reducers/modules';
 import optionReducer from '../reducers/option';
 
 
 const store = configureStore({
   reducer: {
-    connection: connectionReducer,
     modules: modulesReducer,
     option: optionReducer
   },

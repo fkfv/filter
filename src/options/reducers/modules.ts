@@ -1,9 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-import Connection from '../../common/messaging/connection';
-
+import {connection} from '../connection';
 import {RootState} from '../redux/store';
-import {selectConnection} from './connection';
 import {ModuleList, ModuleLoad, ModuleUnload} from '../api/module';
 
 import type {AsyncConfig} from '../redux/store'
@@ -28,9 +26,8 @@ const initialState: ModulesState = {
 
 const listModules = createAsyncThunk<ModuleListType, void, AsyncConfig>(
   'modules/list',
-  async (_, {getState}) => {
-    const connection = selectConnection(getState());
-    const modules = await ModuleList(connection as Connection);
+  async () => {
+    const modules = await ModuleList(connection);
 
     return modules;
   }
