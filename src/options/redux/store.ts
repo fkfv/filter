@@ -1,3 +1,5 @@
+import logger from 'redux-logger';
+
 import {configureStore, ThunkAction, Action} from '@reduxjs/toolkit';
 
 import connectionReducer from '../reducers/connection';
@@ -11,6 +13,7 @@ const store = configureStore({
     modules: modulesReducer,
     option: optionReducer
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
 });
 
 type AppDispatch = typeof store.dispatch;

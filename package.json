@@ -8,6 +8,7 @@
     "@types/object-hash": "^2.2.1",
     "@types/react-redux": "^7.1.20",
     "@types/react-tabs": "^2.3.3",
+    "@types/redux-logger": "^3.0.9",
     "@types/uuid": "^8.3.1",
     "ajv-cli": "^5.0.0",
     "clean-webpack-plugin": "^4.0.0",
@@ -32,6 +33,7 @@
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
     "react-tabs": "^3.2.3",
+    "redux-logger": "^3.0.6",
     "uuid": "^8.3.2"
   },
   "scripts": {
