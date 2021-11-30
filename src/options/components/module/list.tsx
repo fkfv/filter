@@ -7,7 +7,7 @@ import RawToggle from '../controls/raw-toggle';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {selectModules, setConfirmRemove, activateModule,
   deactivateModule} from '../../reducers/modules';
-import {selectModule, setModule} from '../../reducers/option';
+import {selectModule, setModule, listOptions} from '../../reducers/option';
 import {ListItem, ListControls, ListDescription, ItemName,
   ItemDescription, Action} from '../list';
 
@@ -31,7 +31,10 @@ const ModuleList = ({
         return (
           <ListItem
             active={isActive}
-            onClick={() => dispatch(setModule(module.name))}
+            onClick={() => {
+              dispatch(setModule(module.name));
+              dispatch(listOptions());
+            }}
             key={module.name}
           >
             <ListDescription>
