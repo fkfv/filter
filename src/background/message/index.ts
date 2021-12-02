@@ -2,6 +2,7 @@ import OptionHandler from './option';
 import FetchHandler from './fetch';
 import ModuleHandler from './module';
 import IdentifyHandler from './identify';
+import BlockerHandler from './blocker';
 import ModuleList from '../module/list';
 
 import {MultiMessageHandler} from '../../common/message/handler';
@@ -28,7 +29,13 @@ const IndexHandler = (list: ModuleList) => (msg: any) => {
   MultiMessageHandler(msg, [
     MessageType.IdentifyRequest,
     MessageType.BlockRequest
-  ], IdentifyHandler(list));
+  ], IdentifyHandler(list)) ||
+  MultiMessageHandler(msg, [
+    MessageType.BlockerListRequest,
+    MessageType.BlockerBlockedRequest,
+    MessageType.BlockerAddRequest,
+    MessageType.BlockerRemoveRequest
+  ], BlockerHandler(list));
 };
 
 export default IndexHandler;

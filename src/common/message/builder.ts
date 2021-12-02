@@ -200,6 +200,86 @@ const BlockResponse = () => {
   };
 };
 
+const BlockerListRequest = (module: string) => {
+  return {
+    type: MessageType.BlockerListRequest,
+    payload: {
+      module
+    }
+  };
+};
+
+const BlockerListResponse = (module: string, blockers: {
+  id: string;
+  name: {
+    singular: string;
+    plural: string;
+  };
+  description: string;
+}[]) => {
+  return {
+    type: MessageType.BlockerListResponse,
+    payload: {
+      module,
+      blockers
+    }
+  };
+};
+
+const BlockerBlockedRequest = (module: string, blocker: string) => {
+  return {
+    type: MessageType.BlockerBlockedRequest,
+    payload: {
+      module,
+      blocker
+    }
+  };
+};
+
+const BlockerBlockedResponse = (module: string, blocker: string,
+                                blocked: string[]) => {
+  return {
+    type: MessageType.BlockerBlockedResponse,
+    payload: {
+      module,
+      blocker,
+      blocked
+    }
+  };
+};
+
+const BlockerModifyRequest = (type: string, module: string, blocker: string,
+                              item: string) => {
+  return {
+    type,
+    payload: {
+      module,
+      blocker,
+      item
+    }
+  };
+};
+
+const BlockerAddRequest = (module: string, blocker: string, item: string) =>
+  BlockerModifyRequest(MessageType.BlockerAddRequest, module, blocker, item);
+
+const BlockerAddResponse = () => {
+  return {
+    type: MessageType.BlockerAddResponse,
+    payload: {}
+  };
+};
+
+const BlockerRemoveRequest = (module: string, blocker: string, item: string) =>
+  BlockerModifyRequest(MessageType.BlockerAddRequest, module, blocker, item);
+
+const BlockerRemoveResponse = () => {
+  return {
+    type: MessageType.BlockerRemoveResponse,
+    payload: {}
+  };
+};
+
 const RefreshRequest = () => {
   return {
     type: MessageType.RefreshRequest,
@@ -236,6 +316,10 @@ export {
   ModuleRemoveRequest, ModuleRemoveResponse,
   IdentifyRequest, IdentifyResponse,
   BlockRequest, BlockResponse,
+  BlockerListRequest, BlockerListResponse,
+  BlockerBlockedRequest, BlockerBlockedResponse,
+  BlockerAddRequest, BlockerAddResponse,
+  BlockerRemoveRequest, BlockerRemoveResponse,
   RefreshRequest, ModuleRefreshRequest,
   ErrorResponse
 };

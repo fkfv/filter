@@ -307,4 +307,4 @@ type CategoryOutType = [string, {[optionName: string]: Option}];
 
 export default Module;
 
-export type {Options, OptionBoolean, OptionString, OptionNumber};
+export type {Options, OptionBoolean, OptionString, OptionNumber, Blockable};

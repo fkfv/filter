@@ -51,6 +51,18 @@ enum MessageType {
   BlockResponse = "background/block",
 
   /*
+  ** Allow the popup to request what blocked items a module has.
+  */
+  BlockerListRequest = "content-script/blocker/list",
+  BlockerBlockedRequest = "content-script/blocker/blocked",
+  BlockerAddRequest = "content-script/blocker/add",
+  BlockerRemoveRequest = "content-script/blocker/remove",
+  BlockerListResponse = "background/blocker/list",
+  BlockerBlockedResponse = "background/blocker/blocked",
+  BlockerAddResponse = "background/blocker/add",
+  BlockerRemoveResponse = "background/blocker/remove",
+
+  /*
   ** Allow the background script to request a content script to recheck for
   ** blocked data and modules.
   */
@@ -226,6 +238,53 @@ type IdentifyResponse = MessageTypeGen<MessageType.IdentifyResponse,
                                        IdentifyResponsePayload>;
 type BlockResponse = MessageTypeGen<MessageType.BlockResponse, {}>;
 
+type BlockerListRequestPayload = {
+  module: string;
+};
+
+type BlockerListResponsePayload = {
+  module: string;
+  blockers: {
+    id: string;
+    name: {
+      singular: string;
+      plural: string;
+    };
+    description: string;
+  }[];
+};
+
+type BlockerBlockedRequestPayload = {
+  module: string;
+  blocker: string;
+};
+
+type BlockerBlockedResponsePayload = BlockerBlockedRequestPayload & {
+  blocked: string[];
+};
+
+type BlockerModifyRequestPayload = {
+  module: string;
+  blocker: string;
+  item: string;
+};
+
+type BlockerListRequest = MessageTypeGen<MessageType.BlockerListRequest,
+                                         BlockerListRequestPayload>;
+type BlockerListResponse = MessageTypeGen<MessageType.BlockerListResponse,
+                                          BlockerListResponsePayload>;
+type BlockerBlockedRequest = MessageTypeGen<MessageType.BlockerBlockedRequest,
+                                            BlockerBlockedRequestPayload>;
+type BlockerBlockedResponse = MessageTypeGen<MessageType.BlockerBlockedResponse,
+                                             BlockerBlockedResponsePayload>;
+type BlockerAddRequest = MessageTypeGen<MessageType.BlockerAddRequest,
+                                        BlockerModifyRequestPayload>;
+type BlockerAddResponse = MessageTypeGen<MessageType.BlockerAddResponse, {}>;
+type BlockerRemoveRequest = MessageTypeGen<MessageType.BlockerRemoveRequest,
+                                        BlockerModifyRequestPayload>;
+type BlockerRemoveResponse = MessageTypeGen<MessageType.BlockerRemoveRequest,
+                                            {}>;
+
 type RefreshRequest = MessageTypeGen<MessageType.RefreshRequest, {}>;
 type ModuleRefreshRequest = MessageTypeGen<MessageType.ModuleRefreshRequest,
                                            {}>;
@@ -263,6 +322,14 @@ type Message =
   |BlockRequest
   |IdentifyResponse
   |BlockResponse
+  |BlockerListRequest
+  |BlockerBlockedRequest
+  |BlockerAddRequest
+  |BlockerRemoveRequest
+  |BlockerListResponse
+  |BlockerBlockedResponse
+  |BlockerAddResponse
+  |BlockerRemoveResponse
   |RefreshRequest
   |ModuleRefreshRequest
   |ErrorResponse
@@ -272,7 +339,9 @@ export {MessageType};
 
 export type {
   OptionListOption,
-  ModuleListResponsePayload
+  ModuleListResponsePayload,
+  BlockerListResponsePayload,
+  BlockerBlockedResponsePayload
 };
 
 export type {
@@ -300,6 +369,14 @@ export type {
   BlockRequest,
   IdentifyResponse,
   BlockResponse,
+  BlockerListRequest,
+  BlockerBlockedRequest,
+  BlockerAddRequest,
+  BlockerRemoveRequest,
+  BlockerListResponse,
+  BlockerBlockedResponse,
+  BlockerAddResponse,
+  BlockerRemoveResponse,
   RefreshRequest,
   ModuleRefreshRequest,
   ErrorResponse
