@@ -12,7 +12,7 @@ type ButtonProps = React.PropsWithChildren<{
 const ButtonStyle = css({
   fontSize: '1em',
   cursor: 'pointer',
-  backgroundColor: '#f7f7f7'
+  backgroundColor: '#f7f7f7',
 
   ':hover': {
     backgroundColor: '#f2f2f2'

@@ -1,11 +1,10 @@
 import React from 'react';
 
-import {css, cx} from '@emotion/css';
+import {css} from '@emotion/css';
 
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;
-  width?: "auto"|"full";
 };
 
 const InputStyle = css({
@@ -41,19 +40,13 @@ const InputStyle = css({
   }
 });
 
-const Input: React.FunctionComponent<InputProps> = ({
+const Input = ({
   label,
-  width,
   ...props
-}) => {
-  const styles = cx({
-    [InputStyle]: true,
-    [FullInputStyle]: width === 'full'
-  });
-
+}: InputProps) => {
   return (
     <label
-      className={styles}
+      className={InputStyle}
     >
       <input
         placeholder={label}
