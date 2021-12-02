@@ -7,6 +7,7 @@ import {injectGlobal} from '@emotion/css';
 import App from './components/app';
 
 import {store} from './redux/store';
+import {listModules} from './reducers/modules';
 
 
 injectGlobal({
@@ -17,6 +18,8 @@ injectGlobal({
     maxHeight: '500px'
   }
 });
+
+store.dispatch(listModules());
 
 render(
   <Provider store={store}>
