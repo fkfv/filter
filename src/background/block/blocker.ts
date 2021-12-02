@@ -18,7 +18,7 @@ class Blocker {
         if (items === undefined) {
           reject(chrome.runtime.lastError);
         } else {
-          resolve(items[`${this.module.name as string}.${name}`] as string[]);
+          resolve(items[`blocked.${this.module.name as string}.${name}`] as string[]);
         }
       });
     });
