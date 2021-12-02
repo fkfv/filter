@@ -2,9 +2,13 @@ import logger from 'redux-logger';
 
 import {configureStore, ThunkAction, Action} from '@reduxjs/toolkit';
 
+import modulesReducer from '../reducers/modules';
+
 
 const store = configureStore({
-  reducer: {},
+  reducer: {
+    modules: modulesReducer,
+  },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
 });
 
