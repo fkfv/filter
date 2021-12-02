@@ -110,6 +110,7 @@ const selectBlocked = (state: RootState) => state.blocked.contentList;
 
 const {setModule, setSelectedBlockable} = blockedSlice.actions;
 
+export {listBlockables, listBlocked, addBlocked, removeBlocked};
 export {selectModule, selectBlockables, selectBlockable, selectBlocked,
   setModule, setSelectedBlockable};
 
