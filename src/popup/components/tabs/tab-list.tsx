@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {css} from '@emotion/css';
-import {TabList as ReactTabList} from 'react-tabs';
 
 
 const TabListStyle = css({
@@ -22,16 +21,13 @@ const TabList: React.FunctionComponent = ({
   ...props
 }) => {
   return (
-    <ReactTabList
+    <ul
       className={TabListStyle}
       {...props}
     >
       {children}
-    </ReactTabList>
+    </ul>
   );
-}
-
-// @ts-ignore
-TabList.tabsRole = 'TabList';
+};
 
 export default TabList;

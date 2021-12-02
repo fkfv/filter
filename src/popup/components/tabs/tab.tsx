@@ -1,8 +1,12 @@
 import React from 'react';
 
-import {css} from '@emotion/css';
-import {Tab as ReactTab} from 'react-tabs';
+import {css, cx} from '@emotion/css';
 
+
+type TabProps = {
+  active: boolean;
+  onClick: ((e: React.SyntheticEvent) => void);
+};
 
 const TabStyle = css({
   display: 'flex',
@@ -26,22 +30,24 @@ const ActiveTabStyle = css({
   },
 });
 
-const Tab: React.FunctionComponent = ({
+const Tab = ({
   children,
+  active,
   ...props
-}) => {
+}: React.PropsWithChildren<TabProps>) => {
+  const styles = cx({
+    [TabStyle]: true,
+    [ActiveTabStyle]: active
+  })
+
   return (
-    <ReactTab
-      className={TabStyle}
-      selectedClassName={ActiveTabStyle}
+    <li
+      className={styles}
       {...props}
     >
       <a>{children}</a>
-    </ReactTab>
+    </li>
   );
 };
-
-// @ts-ignore
-Tab.tabsRole = 'Tab';
 
 export default Tab;

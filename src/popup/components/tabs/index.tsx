@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {css} from '@emotion/css';
-import {Tabs as ReactTabs} from 'react-tabs';
 
 import TabList from './tab-list';
 import TabPanel from './tab-panel';
@@ -20,16 +19,13 @@ const Tabs: React.FunctionComponent = ({
   ...props
 }) => {
   return (
-    <ReactTabs
+    <div
       className={TabsStyle}
       {...props}
     >
       {children}
-    </ReactTabs>
+    </div>
   );
 };
-
-// @ts-ignore
-Tabs.tabsRole = 'Tabs';
 
 export {Tabs, TabList, TabPanel, Tab};

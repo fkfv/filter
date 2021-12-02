@@ -1,14 +1,9 @@
 import React from 'react';
 
 import {css} from '@emotion/css';
-import {TabPanel as ReactTabPanel} from 'react-tabs';
 
 
 const TabPanelStyle = css({
-  display: 'none'
-});
-
-const ActiveTabPanelStyle = css({
   padding: '10px',
   display: 'flex',
   flexDirection: 'column',
@@ -20,17 +15,13 @@ const TabPanel: React.FunctionComponent = ({
   ...props
 }) => {
   return (
-    <ReactTabPanel
+    <div
       className={TabPanelStyle}
-      selectedClassName={ActiveTabPanelStyle}
       {...props}
     >
       {children}
-    </ReactTabPanel>
+    </div>
   );
 };
-
-// @ts-ignore
-TabPanel.tabsRole = 'TabPanel';
 
 export default TabPanel;
