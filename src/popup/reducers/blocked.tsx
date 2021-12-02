@@ -83,12 +83,14 @@ const blockedSlice = createSlice({
     },
     setSelectedBlockable: (state, action) => {
       state.selectedBlockable = action.payload;
+    },
+    setFirstBlockable: (state, _) => {
+      state.selectedBlockable = state.blockables[0];
     }
   },
   extraReducers: (builder) => {
     builder.addCase(listBlockables.fulfilled, (state, action) => {
       state.blockables = action.payload;
-      state.selectedBlockable = state.blockables[0];
     });
     builder.addCase(listBlocked.fulfilled, (state, action) => {
       state.contentList = action.payload;
@@ -115,10 +117,11 @@ const selectBlockables = (state: RootState) => state.blocked.blockables;
 const selectBlockable = (state: RootState) => state.blocked.selectedBlockable;
 const selectBlocked = (state: RootState) => state.blocked.contentList;
 
-const {setModule, setSelectedBlockable} = blockedSlice.actions;
+const {setModule, setSelectedBlockable,
+  setFirstBlockable} = blockedSlice.actions;
 
 export {listBlockables, listBlocked, addBlocked, removeBlocked};
 export {selectModule, selectBlockables, selectBlockable, selectBlocked,
-  setModule, setSelectedBlockable};
+  setModule, setSelectedBlockable, setFirstBlockable};
 
 export default blockedSlice.reducer;
