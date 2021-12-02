@@ -94,11 +94,18 @@ const blockedSlice = createSlice({
       state.contentList = action.payload;
     });
     builder.addCase(addBlocked.fulfilled, (state, action) => {
-      state.contentList.push(action.payload);
+      const index = state.contentList.indexOf(action.payload);
+
+      if (index === -1) {
+        state.contentList.push(action.payload);
+      }
     });
     builder.addCase(removeBlocked.fulfilled, (state, action) => {
       const index = state.contentList.indexOf(action.payload);
-      state.contentList.splice(index, 1);
+
+      if (index !== -1) {
+        state.contentList.splice(index, 1);
+      }
     });
   }
 });
