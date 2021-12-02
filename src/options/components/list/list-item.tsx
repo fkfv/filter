@@ -5,7 +5,7 @@ import {css, cx} from '@emotion/css';
 
 type ListItemProps = {
   active?: boolean;
-  onClick: ((e: React.SyntheticEvent) => void);
+  onClick?: ((e: React.SyntheticEvent) => void);
 }
 
 const ListItemStyle = css({

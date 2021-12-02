@@ -34,7 +34,7 @@ const RedButtonStyle = css({
 
 const GreenButtonStyle = css({
   height: '35px',
-  padding: '10px 0',
+  padding: '0 10px',
   marginLeft: '5px',
   border: '1px solid #008000',
   borderRadius: '2px'
