@@ -3,11 +3,13 @@ import logger from 'redux-logger';
 import {configureStore, ThunkAction, Action} from '@reduxjs/toolkit';
 
 import modulesReducer from '../reducers/modules';
+import blockedReducer from '../reducers/blocked';
 
 
 const store = configureStore({
   reducer: {
     modules: modulesReducer,
+    blocked: blockedReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
 });
